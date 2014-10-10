@@ -54,8 +54,8 @@
 
         <div class="text-vertical-center">
 			<div id="meio">
-            <h1 id="contador">...</h1>
-            <h3 id="mensagem">...</h3>
+            <h1 id="contador"><img src="img/loading_.gif"></h1>
+            <h3 id="mensagem"></h3>
             <br>
             <!-- <a href="#about" class="btn btn-dark btn-lg">Find Out More</a> -->
 			</div>
@@ -98,6 +98,9 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+	
+	<!-- Tabletop for getting phrases from Google Spreadsheet -->
+	<script src="js/tabletop.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script>
@@ -130,69 +133,70 @@
         });
     });
     </script>
-
 	
 	<script type="text/javascript">
-
-	/*
-	Annual Occasions Count Down script- By JavaScript Kit
-	For this and over 400+ free scripts, visit http://www.javascriptkit.com
-	This notice must stay intact
-	*/
 	var principalElement = document.getElementById('contador')
 	var mensagemElement = document.getElementById('mensagem')
-	
+	var headerDiv = document.getElementById('top');
 	var today=new Date()
 
+	var beforeOccasionText = "para o aniversário da Milai! "
+	
 	//Enter the occasion's MONTH (1-12) and DAY (1-31):
 	var theoccasion=new Date(today.getFullYear(),10, 08)
+	
+	var spreadsheet_key = '1jlVo7FAg6Qr5JgvBDujGVSlC39djOXA8na7-FmzZWpo';
+	//window.onload = function() { init() };
+	
+	$(function() {
+	Tabletop.init( { key: spreadsheet_key,
+					 callback: showInfo,
+					 simpleSheet: true } )
+	});
+	
+	function showInfo(data, tabletop) {
+				
+		/*
+		Annual Occasions Count Down script- By JavaScript Kit
+		For this and over 400+ free scripts, visit http://www.javascriptkit.com
+		This notice must stay intact
+		*/
 
-	//Customize text to show before and on occasion. Follow grammer below:
-	var beforeOccasionText="para o aniversário da Milai"
-	var onOccasiontext="Today is Christmas. Happy Holidays!"
+		var monthtext=new Array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro")
+		theoccasion.setMonth(theoccasion.getMonth()-1) //change to 0-11 month format
+		var showdate="("+theoccasion.getDate()+" de "+monthtext[theoccasion.getMonth()]+")" //show date of occasion
 
-	var monthtext=new Array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro")
-	theoccasion.setMonth(theoccasion.getMonth()-1) //change to 0-11 month format
-	var showdate="("+theoccasion.getDate()+" de "+monthtext[theoccasion.getMonth()]+")" //show date of occasion
+		var one_day=1000*60*60*24
+		var calculatediff=""
 
-	var one_day=1000*60*60*24
-	var calculatediff=""
-
-	calculatediff=Math.ceil((theoccasion.getTime()-today.getTime())/(one_day))
-	if (calculatediff<0){ //if bday already passed
-	var nextyeartoday=new Date()
-	nextyeartoday.setFullYear(today.getFullYear()+1)
-	calculatediff=Math.ceil((nextyeartoday.getTime()-today.getTime())/(one_day)+calculatediff)
-	}
-
-	//Display message accordingly
-	var pluraldayornot=(calculatediff==1)? "dia" : "dias"
-	var pluralfaltamornot=(calculatediff==1)? "Falta" : "Faltam"
-//	if (calculatediff>0)
-//		document.write("<b>"+calculatediff+" "+pluraldayornot+" "+beforeOccasionText+" "+showdate+"!</b>")
-//	else if (calculatediff==0)
-//		document.write("<b>"+onOccasiontext+" "+showdate+"!</b>")
-		
-	if(calculatediff==0){
-		principalElement.innerHTML = "Parabéns Milai!!!"
-		mensagemElement.innerHTML = "É hoje!! 'Bora lá para a festa!"
-		var headerDiv = document.getElementById('top');
-		// copyright https://www.flickr.com/photos/chelsealroberson/4695159468/
-		headerDiv.style.backgroundImage = 'url(img/bg_bday.jpg)';
-	}
-	else {
-		principalElement.innerHTML="Já faltou mais..."
-		mensagemElement.innerHTML=pluralfaltamornot+" "+calculatediff+" "+pluraldayornot+" "+beforeOccasionText+" "+showdate+"!"
-		//mensagemElement.innerHTML = "Faltam "+dday+ " dias, "+dhour+" horas, "+dmin+" minutos, e "+dsec+" segundos para o aniversário da Milai..."
-		//principalElement.innerHTML = "Já faltou mais..."
-		if(calculatediff<30){
-			principalElement.innerHTML = "Está quase!!!"
+		calculatediff=Math.ceil((theoccasion.getTime()-today.getTime())/(one_day))
+		if (calculatediff<0){ //if bday already passed
+		var nextyeartoday=new Date()
+		nextyeartoday.setFullYear(today.getFullYear()+1)
+		calculatediff=Math.ceil((nextyeartoday.getTime()-today.getTime())/(one_day)+calculatediff)
 		}
-		if(calculatediff>335){
-			principalElement.innerHTML = "Agora só para o ano... :("
-		}
+
+		//Display message accordingly
+		var pluraldayornot=(calculatediff==1)? "dia" : "dias"
+		var pluralfaltamornot=(calculatediff==1)? "Falta" : "Faltam"
 		
+		// Get message from spreadsheet for this day
+		principalElement.innerHTML = data[calculatediff].phrase
+		
+		if(calculatediff==0){
+			
+			mensagemElement.innerHTML = data[calculatediff].message
+			
+			// copyright https://www.flickr.com/photos/chelsealroberson/4695159468/
+			headerDiv.style.backgroundImage = 'url(img/bg_bday.jpg)';
+		}
+		else {
+			mensagemElement.innerHTML=pluralfaltamornot+" "+calculatediff+" "+pluraldayornot+" "+beforeOccasionText+" "+showdate+"!"
+			headerDiv.style.backgroundImage = 'url(img/bg_normal.jpg)';
+		}
+	
 	}
+
 
 </script>
 </body>
