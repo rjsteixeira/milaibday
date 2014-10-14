@@ -186,13 +186,23 @@
 		if(calculatediff==0){
 			
 			mensagemElement.innerHTML = data[calculatediff].message
-			
-			// copyright https://www.flickr.com/photos/chelsealroberson/4695159468/
-			headerDiv.style.backgroundImage = 'url(img/bg_bday.jpg)';
+				
+			// Fills the background with outside image if it exists
+			if(data[calculatediff].background)
+				headerDiv.style.backgroundImage = 'url('+data[calculatediff].background+')';
+			else
+				// copyright https://www.flickr.com/photos/chelsealroberson/4695159468/
+				headerDiv.style.backgroundImage = 'url(img/bg_bday.jpg)';
 		}
 		else {
 			mensagemElement.innerHTML=pluralfaltamornot+" "+calculatediff+" "+pluraldayornot+" "+beforeOccasionText+" "+showdate+"!"
-			headerDiv.style.backgroundImage = 'url(img/bg_normal.jpg)';
+
+			
+			// Fills the background with outside image if it exists
+			if(data[calculatediff].background)
+				headerDiv.style.backgroundImage = 'url('+data[calculatediff].background+')';
+			else
+				headerDiv.style.backgroundImage = 'url(img/bg_normal.jpg)';
 		}
 	
 	}
