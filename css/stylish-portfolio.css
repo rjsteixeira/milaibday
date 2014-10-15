@@ -16,6 +16,14 @@ body {
     font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+#weather{ /* the weather widget */
+	padding-top: 1em;
+	padding-bottom: 0.1em;
+	border: 0;
+	font-weight: 300;
+	font-size: 21px;
+}
+
 #meio{ /* The grey horizontal bar behind the main text */
 	background: rgb(160, 160, 160); /* Fall-back for browsers that don't
                                     support rgba */

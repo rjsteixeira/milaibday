@@ -20,7 +20,7 @@
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -56,7 +56,9 @@
 			<div id="meio">
             <h1 id="contador"><img src="img/loading_.gif"></h1>
             <h3 id="mensagem"></h3>
-            <br>
+			<div class="text-center" id="weather">
+				<span id="city"></span> |<img id="weathericon"><span id="weathercond"></span> (<span id="temperature"></span>) | <span id="wind"></span>
+			</div>
             <!-- <a href="#about" class="btn btn-dark btn-lg">Find Out More</a> -->
 			</div>
         </div>
@@ -101,6 +103,10 @@
 	
 	<!-- Tabletop for getting phrases from Google Spreadsheet -->
 	<script src="js/tabletop.js"></script>
+	
+	<!-- Simple Weather -->
+	<script src="js/jquery.simpleWeather.min.js"</script>
+	
 
     <!-- Custom Theme JavaScript -->
     <script>
@@ -207,6 +213,26 @@
 	
 	}
 
+
+	
+	// Docs at http://simpleweatherjs.com
+	$(document).ready(function() {
+	  $.simpleWeather({
+		location: 'Vila do Conde', // This is hard coded for now... :(
+		woeid: '',
+		unit: 'c',
+		success: function(weather) {
+			$("#city").text(weather.city);
+			$("#weathericon").attr("src",weather.thumbnail);
+			$("#weathercond").text(weather.currently);
+			$("#temperature").text(weather.temp+'º'+weather.units.temp);
+			$("#wind").text(weather.wind.direction+' '+weather.wind.speed+' '+weather.units.speed);
+		},
+		error: function(error) {
+		  $("#weather").html('<p>'+error+'</p>');
+		}
+	  });
+	});
 
 </script>
 </body>
