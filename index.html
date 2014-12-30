@@ -148,8 +148,8 @@
 
 	var beforeOccasionText = "para o aniversário da Milai! "
 	
-	//Enter the occasion's MONTH (1-12) and DAY (1-31):
-	var theoccasion=new Date(today.getFullYear(),10, 08)
+	//Enter the occasion's MONTH (0-11) and DAY (1-31):
+	var theoccasion=new Date(today.getFullYear(),00, 01)
 	
 	var spreadsheet_key = '1jlVo7FAg6Qr5JgvBDujGVSlC39djOXA8na7-FmzZWpo';
 	//window.onload = function() { init() };
@@ -169,18 +169,21 @@
 		*/
 
 		var monthtext=new Array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro")
-		theoccasion.setMonth(theoccasion.getMonth()-1) //change to 0-11 month format
+		//theoccasion.setMonth(theoccasion.getMonth()-1) //change to 0-11 month format
 		var showdate="("+theoccasion.getDate()+" de "+monthtext[theoccasion.getMonth()]+")" //show date of occasion
 
 		var one_day=1000*60*60*24
 		var calculatediff=""
 
 		calculatediff=Math.ceil((theoccasion.getTime()-today.getTime())/(one_day))
+			
 		if (calculatediff<0){ //if bday already passed
-		var nextyeartoday=new Date()
-		nextyeartoday.setFullYear(today.getFullYear()+1)
-		calculatediff=Math.ceil((nextyeartoday.getTime()-today.getTime())/(one_day)+calculatediff)
+			var nextyeartoday=new Date()
+			nextyeartoday.setFullYear(today.getFullYear()+1)
+			// Used floor instead of ceil because nextyeartoday-today gives us 365 (or 366) days + a few seconds
+			calculatediff=Math.floor((nextyeartoday.getTime()-today.getTime())/(one_day))+calculatediff
 		}
+		
 
 		//Display message accordingly
 		var pluraldayornot=(calculatediff==1)? "dia" : "dias"
